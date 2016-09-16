@@ -12,9 +12,6 @@ With R it is possible to download and process information from OpenStreetMap. Th
 
 The map shows the different kind of generators located in Germany. It is visible that wind generators are by far the most used generator type in Germany. The visualisation was done using the Software as a Service CartoDB. The example data is available here.
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
-```
 ##IMPORT SHAPEFILES
 
 **Shapefiles** are very important to display data in maps. There are several sources for shapefiles available. And we do have several possibilities to import shapefiles to R.
