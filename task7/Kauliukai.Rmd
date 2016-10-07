@@ -16,15 +16,10 @@ Du žaidėjai žaidžia tokį žaidimą. Pirmasis žaidėjas meta tris kauliukus
 ```{r }
 n <- 10^4
 x1 <- replicate(n, sum(sample(1:6, 3, replace = TRUE)))
-
 x2 <- replicate(n, sum(sample(1:6, 2, replace = TRUE)))
-
 x1_laimi <- sum((x1>x2)==TRUE)
-
 ismetami <- sum((x1==x2)==TRUE)
-
 prob <- x1_laimi/(n-ismetami)
-
 prob
 ```
 

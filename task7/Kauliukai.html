@@ -122,8 +122,6 @@ $(document).ready(function () {
 </div>
 
 
-<div id="kauliukai" class="section level2">
-<h2>Kauliukai</h2>
 <p>Du žaidėjai žaidžia tokį žaidimą. Pirmasis žaidėjas meta tris kauliukus ir fiksuoja iškritusių taškų sumą. Antrasis žaidėjas ridena du kauliukus ir skaičiuoja iškritusių taškų sumą. Laimi tas žaidėjas, kurio taškų suma yra didesnė. Jeigu taškų sumos yra lygios, tai, tai ekspermentas kartojamas iš naujo (ir taip kartojama tol, kol galiausiai nustatomas laimėtojas). Kokia tikimybė laimėti pirmajam žaidėjui?</p>
 <pre class="r"><code>n &lt;- 10^4
 x1 &lt;- replicate(n, sum(sample(1:6, 3, replace = TRUE)))
@@ -137,8 +135,7 @@ ismetami &lt;- sum((x1==x2)==TRUE)
 prob &lt;- x1_laimi/(n-ismetami)
 
 prob</code></pre>
-<pre><code>## [1] 0.8355987</code></pre>
-</div>
+<pre><code>## [1] 0.8301317</code></pre>
 
 
 
