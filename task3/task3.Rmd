@@ -1,7 +1,7 @@
 ---
 title: "Task 3"
 author: "Domante Bulovaite"
-date: '2016 m rugsëjis 16 d '
+date: '2016 m rugs?jis 16 d '
 output: html_document
 ---
 ## MAPS IN R
