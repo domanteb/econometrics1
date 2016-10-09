@@ -1,0 +1,22 @@
+---
+title: "CRT"
+author: "Domante Bulovaite"
+date: '2016 m spalis 7 d '
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library('prob')
+```
+
+CRT. Generuojame $n$ atsitiktinių dydžių turinčių Beta skirstinį su parametrais $\alpha=\beta=0.5$ Iš šių atsitiktinių dydžių suskaičiuojamas aritmetinis vidurkis. Kaip atrodo aritmetinio vidurkio tankis, kai $n=100$?
+
+```{r}
+meanMC <- function(n) mean(rbeta(n, 0.5, 0.5)) #vidurkio funkcija pagal Monte-Carlo metodą
+sim = replicate(10000, meanMC(100))
+plot(density(sim), main="Vidukrio skirstinys, kai n=100", xlab="x", ylab="Tankis", 
+     lwd=2, xlim=c(0.3, 0.65), col=2)
+
+legend("topright","MC tankis", lwd=2, col = 2, inset = .05)
+```

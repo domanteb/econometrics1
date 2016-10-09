@@ -1,7 +1,7 @@
 ---
 title: "Kauliukai"
 author: "Domante Bulovaite"
-date: '2016 m rugsėjis 30 d '
+date: '2016 m spalis 7 d '
 output: html_document
 ---
 

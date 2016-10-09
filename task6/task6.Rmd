@@ -1,0 +1,210 @@
+---
+title: "Task 6"
+author: "Domante Bulovaite"
+date: '2016 m spalio 10d'
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(knitr)
+
+```
+
+1. Duomenų nuskaitymas ir jų peržiūra:
+
+```{r}
+dataf=read.csv("R_programing_swirlResults.csv", stringsAsFactors = FALSE)
+View(dataf)
+```
+
+
+2. Tikriname duomenų tipų korektiškumą: 
+
+```{r}
+sapply(dataf, class)
+```
+
+
+3. Pastebime, kad datų tipas nekorektiškas, reikia koreguoti:
+
+```{r}
+dataf <- transform(dataf, datetime = as.POSIXlt(datetime), sysTime = as.POSIXlt(sysTime) )
+
+```
+
+
+4. Reikia išvalyti masyvą nuo šiukšlių. Mums nereikalingi vartotojų "aaa", "testas", "1vbutkus" duomenys:
+
+```{r}
+unique(dataf$user)
+```
+
+5. Išvalome ir patikriname ar vartotojų duomenys ištrinti:
+```{r}
+c=dataf$user %in% c("1vbutkus", "aaa", "testas")
+dataf=dataf[!c,]
+unique(dataf$user)
+```
+
+6. Matome, jog kai kurie vartotojai naudojo kelis skirtingus vardus, taigi šių vartotojų duomenis apjungsime (“gyse” ir “gyse3054”; “Juste”, “juste”, “ju”, ir “j”; “rokasalek” ir “rokasaleks” ):
+
+```{r}
+dataf$user[dataf$user=="gyse3054"] <- "gyse"
+dataf$user[dataf$user=="Juste" | dataf$user=="ju" | dataf$user=="j"] <- "juste"
+dataf$user[dataf$user=="rokasalek"] <- "rokasaleks"
+unique(dataf$user)
+
+```
+
+7. Reikia patikrinti ar vartotojai nesuvedė pakartotinai formų ir ar neatsirado duomenų dubliavimosi.
+Tam reikia tikrinti stulpelius su vartotojo vardu, pamokos pavadinimu, klausimo numeriu, bandymo numeriu ir “skipped” reikšme.
+
+```{r}
+a=data.frame(dataf$user, dataf$lesson_name, dataf$attempt, dataf$question_number, dataf$correct, dataf$skipped)
+table(duplicated(a))
+```
+
+Matome, kad dubliavosi, tai ištriname besidubliavusius duomenis:
+
+```{r}
+
+dataf=dataf[!duplicated(a),]
+a=data.frame(dataf$user, dataf$lesson_name, dataf$attempt, dataf$question_number, dataf$correct, dataf$skipped)
+table(duplicated(a))
+```
+
+
+8. Norėdami surasti, kurie vartotojai atliko visas užduotis, turime iš duomenų lentelės pašalinti tuos vartotojus, kurie praleido bent vieną klausimą:
+```{r}
+table(dataf[dataf$skipped==TRUE,7])
+```
+
+```{r}
+c=dataf$user %in% c("Dariukxas", "Domante Bulovaite", "Greta", "gretajes", "gyse3054", "juste", "Juste", "Karolina", "kestous", "ogadova", "ojautakaite",  "Raigardas", "rokasaleks", "SandraKozlovskaja", "simonalevickaite", "sindeivydas", "j" , "ju")
+table(dataf[!(c),7])
+```
+Iš karto galime atmesti:Danielius, Dominykas, gyse, rokasalek. Pagal atsakytų klausimų skaičių matosi, kad visos užduotys nėra atliktos. Sudarome duomenų lentelę iš likusių vartotojų:
+
+```{r}
+c=dataf$user %in% c("aipe00", "edba2903", "emru3000", "MildaPie", "simona1234", "zagnyte" )
+n=dataf[c,]
+```
+
+Sudarome lentelę iš vardų ir pamokų, išimame besidubliuojančius duomenis, kad vėliau patikrintume ar visas pamokas atliko likę vartotojai:
+
+```{r}
+ d=data.frame(n$user, n$lesson_name)
+ d2=d[!duplicated(d), ]
+```
+
+Patikriname ar visi likę vartotojai atliko visas 16 pamoku:
+
+```{r}
+table(d2[,1])
+```
+
+**Matome, kad visas užduotis pilnai atliko vartotojai "aipe00", "emru3000", "simona1234", "zagnyte"**
+
+
+9. Atrenkame vartotojus, kurie praleido nors vieną klausimą arba nėra padarę visų užduočių:
+
+```{r}
+sk=dataf[!(dataf$user=="aipe00" | dataf$user=="emru3000" | dataf$user=="simona1234" | dataf$user=="zagnyte"),]
+```
+
+Kiek kuris vartotojas altiko pamokų:
+
+```{r}
+sk1=data.frame(sk$user, sk$lesson_name)
+sk2=sk1[!duplicated(sk1), ]
+table(sk2[,1])
+```
+Kiek kuris vartotojas praleido klausimų:
+
+```{r}
+table(sk[sk$skipped==TRUE,7])
+```
+
+
+
+```
+
+##Kiti įdomūs klausimai
+
+1. Kiek vidutiniškai užtrunka atlikti užduotis?
+
+1.1 Pirmiausia susitvarkome duomenų lentelę taip, kad joje liktų tik kiekvieno vartotojo atliktos pamokos ir jų atlikimo laikai
+
+```{r}
+
+dataf_time <- dataf[,c(3, 6, 7, 9, 13)]
+dataf2 <- dataf[,c(7,9)]
+dup <- which(duplicated(dataf2), TRUE)
+dataf_time <- dataf_time[-dup,]
+real_taketime <- round(difftime(dataf_time$sysTime, dataf_time$datetime, units="mins"))
+dataf_time <- cbind(dataf_time, real_taketime)
+```
+
+
+1.2 Pagal vartotojų deklaruojamą laiką galime apskaičiuoti kiek vidutiniškai užtrunka atlikti kiekvieną pamoką:
+
+
+```{r}
+
+lessons <- split(dataf_time, f=dataf_time$lesson_name)
+time_decl <- sapply(lessons, function(x) round(mean(x$takeTime), 2))
+sort(time_decl)
+```
+
+
+1.3 Tą patį galime apskaičiuoti ir pagal realų laiką, kurį kiekvienai pamokai atlikti užtruko studentai. Tačiau tam pirmiausia reikia pašalinti eilutes, kuriose atlikimo laikas yra daugiau kaip 60 minučių, kadangi tikėtina, jog tą pamoką studentas atliko per kelis kartus ir šis laikas nėra tikslus:
+
+```{r}
+ind <- with(dataf_time, which(dataf_time$real_taketime>60))
+dataf_time <- dataf_time[-ind, ]
+lessons <- split(dataf_time, f=dataf_time$lesson_name)
+time_taken <- sapply(lessons, function(x) round(mean(x$real_taketime), 2))
+sort(time_taken)
+```
+
+Galime pastebėti, jog studentų deklaruotas vidutinis laikas yra šiek tiek didesnis negu realus laikas, kurį jie užtruko atitinkamoms užduotims atlikti.
+
+
+2. Ar galima pasitikėti žmonių deklaruojamų laiku?
+
+Atsakyti į šį klausimą galima ir remiantis ankstesnio klausimo rezultatais (matyti, kad vidutiniai laikai labai panašūs).
+
+Tačiau tą galime patikrinti ir apskaičiavę skirtumą tarp žmogaus deklaruoto ir sistemos fiksuoto laiko:
+
+```{r}
+timedif <- abs(dataf_time$takeTime - dataf_time$real_taketime)
+mean(timedif)
+```
+Matome, kad vidutiniškai skirtumas yra tik 7 minutės, todėl galima teigti, jog žmonių deklaruojamu laiku galima pasitikėti.
+
+##Nagrinėsiu savo duomenis:
+
+1. Patikrinu kurias užduotis atlikau:
+```{r}
+Domante <- subset(dataf, user == "Domante Bulovaite")
+unique(Domante$lesson_name)
+```
+
+Atliktos visos užduotys
+
+2. Kiek buvo "skipped":
+
+```{r}
+Domante2 <- split(Domante, Domante$skipped)
+nrow(Domante2$`TRUE`)
+```
+
+3. Kurias užduotis praskipinau:
+
+```{r}
+Domante3 <- split(Domante, Domante$skipped)
+Domante3$`TRUE`
+```
+
+**Taigi, iš naujo turėsiu pereiti "Workspace and Files", "Vectors", "Functions" ir "Dates and Times" kursus.**

@@ -1,0 +1,13 @@
+---
+title: "Rulete"
+author: "Domante Bulovaite"
+date: '2016 m rugsėjis 30 d '
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library('prob')
+```
+
+Rulete. Nagrinėkime standartinę kazino ruletę. Kokia tikimybė, kad po $1000$ vienodų statymų ant vienos pasirinktos spalvos, bus teigiamas balansas? Raskite apytikslę $x$ reikšmę, kuriai galioja nelygybe $P(balansas<x) = 0.25$.
