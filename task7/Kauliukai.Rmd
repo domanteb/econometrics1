@@ -9,7 +9,6 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 library('prob')
 ```
-
 Du žaidėjai žaidžia tokį žaidimą. Pirmasis žaidėjas meta tris kauliukus ir fiksuoja iškritusių taškų sumą. Antrasis žaidėjas ridena du kauliukus ir skaičiuoja iškritusių taškų sumą. Laimi tas žaidėjas, kurio taškų suma yra didesnė. Jeigu taškų sumos yra lygios, tai, tai ekspermentas kartojamas iš naujo (ir taip kartojama tol, kol galiausiai nustatomas laimėtojas). Kokia tikimybė laimėti pirmajam žaidėjui?
 
 
@@ -22,8 +21,7 @@ ismetami <- sum((x1==x2)==TRUE)
 prob <- x1_laimi/(n-ismetami)
 prob
 ```
-
-
+Gavau tikimybę laimėti pirmajam žaidėjui.
 
 
 

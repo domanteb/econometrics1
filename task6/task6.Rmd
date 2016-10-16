@@ -93,8 +93,8 @@ n=dataf[c,]
 Sudarome lentelę iš vardų ir pamokų, išimame besidubliuojančius duomenis, kad vėliau patikrintume ar visas pamokas atliko likę vartotojai:
 
 ```{r}
- d=data.frame(n$user, n$lesson_name)
- d2=d[!duplicated(d), ]
+d=data.frame(n$user, n$lesson_name)
+d2=d[!duplicated(d), ]
 ```
 
 Patikriname ar visi likę vartotojai atliko visas 16 pamoku:
@@ -125,9 +125,7 @@ Kiek kuris vartotojas praleido klausimų:
 table(sk[sk$skipped==TRUE,7])
 ```
 
-```
-
-##Kiti įdomūs klausimai
+##Kiti klausimai 
 
 **Kiek vidutiniškai užtrunka atlikti užduotis?**
 

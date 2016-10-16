@@ -1,13 +1,34 @@
 ---
 title: "Rulete"
 author: "Domante Bulovaite"
-date: '2016 m rugsėjis 30 d '
+date: '2016 m spalio 14 d '
 output: html_document
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
-library('prob')
+library(prob)
 ```
 
-Rulete. Nagrinėkime standartinę kazino ruletę. Kokia tikimybė, kad po $1000$ vienodų statymų ant vienos pasirinktos spalvos, bus teigiamas balansas? Raskite apytikslę $x$ reikšmę, kuriai galioja nelygybe $P(balansas<x) = 0.25$.
+**Nagrinėkime standartinę kazino ruletę. Kokia tikimybė, kad po $1000$ vienodų statymų ant vienos pasirinktos spalvos, bus teigiamas balansas? Raskite apytikslę $x$ reikšmę, kuriai galioja nelygybe $P(balansas<x) = 0.25$.**
+
+1.Ruletę sudaro 18 raudonų, 18 juodų ir 1 žalias. 
+Palanki baigtis fiksuojama kaip 1 (18 tokių baigčių - raudona spalva);
+nepalanki -1 (18+1=19 baigčių)
+
+Generuojame imtį ir randame tikimybę:
+
+```{r}
+n=10^4
+balance <- replicate(n, sum(sample(c(rep(-1, 19), rep(1, 18)), 1000, replace = TRUE))) 
+positive.balance= sum((balance>0)==TRUE)
+prob=positive.balance/n
+prob
+```
+
+2.Randame x, kuris tenkina: $P(balansas<x) = 0.25$.
+
+```{r}
+x=quantile(balance, probs=0.25)
+x
+```

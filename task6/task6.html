@@ -117,19 +117,18 @@ $(document).ready(function () {
 
 <h1 class="title toc-ignore">Task 6</h1>
 <h4 class="author"><em>Domante Bulovaite</em></h4>
-<h4 class="date"><em>2016 m spalio 10d</em></h4>
+<h4 class="date"><em>2016 m spalio 7d</em></h4>
 
 </div>
 
 
-<ol style="list-style-type: decimal">
-<li>Duomenų nuskaitymas ir jų peržiūra:</li>
-</ol>
+<div id="uzduotis" class="section level2">
+<h2>UŽDUOTIS</h2>
+<p><strong>Aplanke task6 yra failas R_programing_swirlResults. Jūsų užduotis padaryti rezultatų analizę. Rezultatas turi būti tvarkinga Rmd ataskaita su R kodais ir jūsų komentarais. Analizę galite daryti savo nuožiūrą, bet turite užtikrinti, kad bus išpildyti svarbiausi aspektai </strong></p>
+<p>Duomenų nuskaitymas ir jų peržiūra:</p>
 <pre class="r"><code>dataf=read.csv(&quot;R_programing_swirlResults.csv&quot;, stringsAsFactors = FALSE)
 View(dataf)</code></pre>
-<ol start="2" style="list-style-type: decimal">
-<li>Tikriname duomenų tipų korektiškumą:</li>
-</ol>
+<p>Tikriname duomenų tipų korektiškumą:</p>
 <pre class="r"><code>sapply(dataf, class)</code></pre>
 <pre><code>##               X            name        takeTime         sysUser 
 ##       &quot;integer&quot;     &quot;character&quot;       &quot;integer&quot;     &quot;character&quot; 
@@ -139,13 +138,9 @@ View(dataf)</code></pre>
 ##     &quot;character&quot;       &quot;integer&quot;       &quot;logical&quot;       &quot;integer&quot; 
 ##        datetime         skipped 
 ##     &quot;character&quot;       &quot;logical&quot;</code></pre>
-<ol start="3" style="list-style-type: decimal">
-<li>Pastebime, kad datų tipas nekorektiškas, reikia koreguoti:</li>
-</ol>
+<p>Pastebime, kad datų tipas nekorektiškas, reikia koreguoti:</p>
 <pre class="r"><code>dataf &lt;- transform(dataf, datetime = as.POSIXlt(datetime), sysTime = as.POSIXlt(sysTime) )</code></pre>
-<ol start="4" style="list-style-type: decimal">
-<li>Reikia išvalyti masyvą nuo šiukšlių. Mums nereikalingi vartotojų “aaa”, “testas”, “1vbutkus” duomenys:</li>
-</ol>
+<p>Reikia išvalyti masyvą nuo šiukšlių. Mums nereikalingi vartotojų “aaa”, “testas”, “1vbutkus” duomenys:</p>
 <pre class="r"><code>unique(dataf$user)</code></pre>
 <pre><code>##  [1] &quot;aaa&quot;               &quot;testas&quot;            &quot;1vbutkus&quot;         
 ##  [4] &quot;emru3000&quot;          &quot;gyse&quot;              &quot;simona1234&quot;       
@@ -158,9 +153,7 @@ View(dataf)</code></pre>
 ## [25] &quot;Juste&quot;             &quot;juste&quot;             &quot;Dariukxas&quot;        
 ## [28] &quot;ju&quot;                &quot;simonalevickaite&quot;  &quot;j&quot;                
 ## [31] &quot;Danielius&quot;</code></pre>
-<ol start="5" style="list-style-type: decimal">
-<li>Išvalome ir patikriname ar vartotojų duomenys ištrinti:</li>
-</ol>
+<p>Išvalome ir patikriname ar vartotojų duomenys ištrinti:</p>
 <pre class="r"><code>c=dataf$user %in% c(&quot;1vbutkus&quot;, &quot;aaa&quot;, &quot;testas&quot;)
 dataf=dataf[!c,]
 unique(dataf$user)</code></pre>
@@ -174,9 +167,7 @@ unique(dataf$user)</code></pre>
 ## [22] &quot;Juste&quot;             &quot;juste&quot;             &quot;Dariukxas&quot;        
 ## [25] &quot;ju&quot;                &quot;simonalevickaite&quot;  &quot;j&quot;                
 ## [28] &quot;Danielius&quot;</code></pre>
-<ol start="6" style="list-style-type: decimal">
-<li>Matome, jog kai kurie vartotojai naudojo kelis skirtingus vardus, taigi šių vartotojų duomenis apjungsime (“gyse” ir “gyse3054”; “Juste”, “juste”, “ju”, ir “j”; “rokasalek” ir “rokasaleks” ):</li>
-</ol>
+<p>Matome, jog kai kurie vartotojai naudojo kelis skirtingus vardus, taigi šių vartotojų duomenis apjungsime (“gyse” ir “gyse3054”; “Juste”, “juste”, “ju”, ir “j”; “rokasalek” ir “rokasaleks” ):</p>
 <pre class="r"><code>dataf$user[dataf$user==&quot;gyse3054&quot;] &lt;- &quot;gyse&quot;
 dataf$user[dataf$user==&quot;Juste&quot; | dataf$user==&quot;ju&quot; | dataf$user==&quot;j&quot;] &lt;- &quot;juste&quot;
 dataf$user[dataf$user==&quot;rokasalek&quot;] &lt;- &quot;rokasaleks&quot;
@@ -189,9 +180,7 @@ unique(dataf$user)</code></pre>
 ## [16] &quot;Domante Bulovaite&quot; &quot;Raigardas&quot;         &quot;Greta&quot;            
 ## [19] &quot;gretajes&quot;          &quot;juste&quot;             &quot;Dariukxas&quot;        
 ## [22] &quot;simonalevickaite&quot;  &quot;Danielius&quot;</code></pre>
-<ol start="7" style="list-style-type: decimal">
-<li>Reikia patikrinti ar vartotojai nesuvedė pakartotinai formų ir ar neatsirado duomenų dubliavimosi. Tam reikia tikrinti stulpelius su vartotojo vardu, pamokos pavadinimu, klausimo numeriu, bandymo numeriu ir “skipped” reikšme.</li>
-</ol>
+<p>Reikia patikrinti ar vartotojai nesuvedė pakartotinai formų ir ar neatsirado duomenų dubliavimosi. Tam reikia tikrinti stulpelius su vartotojo vardu, pamokos pavadinimu, klausimo numeriu, bandymo numeriu ir “skipped” reikšme.</p>
 <pre class="r"><code>a=data.frame(dataf$user, dataf$lesson_name, dataf$attempt, dataf$question_number, dataf$correct, dataf$skipped)
 table(duplicated(a))</code></pre>
 <pre><code>## 
@@ -204,9 +193,7 @@ table(duplicated(a))</code></pre>
 <pre><code>## 
 ## FALSE 
 ##  7747</code></pre>
-<ol start="8" style="list-style-type: decimal">
-<li>Norėdami surasti, kurie vartotojai atliko visas užduotis, turime iš duomenų lentelės pašalinti tuos vartotojus, kurie praleido bent vieną klausimą:</li>
-</ol>
+<p>Norėdami surasti, kurie vartotojai atliko visas užduotis, turime iš duomenų lentelės pašalinti tuos vartotojus, kurie praleido bent vieną klausimą:</p>
 <pre class="r"><code>table(dataf[dataf$skipped==TRUE,7])</code></pre>
 <pre><code>## 
 ##         Dariukxas Domante Bulovaite              gyse             Greta 
@@ -228,17 +215,15 @@ table(dataf[!(c),7])</code></pre>
 <pre class="r"><code>c=dataf$user %in% c(&quot;aipe00&quot;, &quot;edba2903&quot;, &quot;emru3000&quot;, &quot;MildaPie&quot;, &quot;simona1234&quot;, &quot;zagnyte&quot; )
 n=dataf[c,]</code></pre>
 <p>Sudarome lentelę iš vardų ir pamokų, išimame besidubliuojančius duomenis, kad vėliau patikrintume ar visas pamokas atliko likę vartotojai:</p>
-<pre class="r"><code> d=data.frame(n$user, n$lesson_name)
- d2=d[!duplicated(d), ]</code></pre>
+<pre class="r"><code>d=data.frame(n$user, n$lesson_name)
+d2=d[!duplicated(d), ]</code></pre>
 <p>Patikriname ar visi likę vartotojai atliko visas 16 pamoku:</p>
 <pre class="r"><code>table(d2[,1])</code></pre>
 <pre><code>## 
 ##     aipe00   edba2903   emru3000   MildaPie simona1234    zagnyte 
 ##         16         11         16         15         16         16</code></pre>
 <p><strong>Matome, kad visas užduotis pilnai atliko vartotojai “aipe00”, “emru3000”, “simona1234”, “zagnyte”</strong></p>
-<ol start="9" style="list-style-type: decimal">
-<li>Atrenkame vartotojus, kurie praleido nors vieną klausimą arba nėra padarę visų užduočių:</li>
-</ol>
+<p>Atrenkame vartotojus, kurie praleido nors vieną klausimą arba nėra padarę visų užduočių:</p>
 <pre class="r"><code>sk=dataf[!(dataf$user==&quot;aipe00&quot; | dataf$user==&quot;emru3000&quot; | dataf$user==&quot;simona1234&quot; | dataf$user==&quot;zagnyte&quot;),]</code></pre>
 <p>Kiek kuris vartotojas altiko pamokų:</p>
 <pre class="r"><code>sk1=data.frame(sk$user, sk$lesson_name)
@@ -266,20 +251,18 @@ table(sk2[,1])</code></pre>
 ##               131                 8                 9               114 
 ## SandraKozlovskaja  simonalevickaite       sindeivydas 
 ##                16                 5                18</code></pre>
-<p>```</p>
-<div id="kiti-idomus-klausimai" class="section level2">
-<h2>Kiti įdomūs klausimai</h2>
-<ol style="list-style-type: decimal">
-<li>Kiek vidutiniškai užtrunka atlikti užduotis?</li>
-</ol>
-<p>1.1 Pirmiausia susitvarkome duomenų lentelę taip, kad joje liktų tik kiekvieno vartotojo atliktos pamokos ir jų atlikimo laikai</p>
+</div>
+<div id="kiti-klausimai" class="section level2">
+<h2>Kiti klausimai</h2>
+<p><strong>Kiek vidutiniškai užtrunka atlikti užduotis?</strong></p>
+<p>Pirmiausia susitvarkome duomenų lentelę taip, kad joje liktų tik kiekvieno vartotojo atliktos pamokos ir jų atlikimo laikai</p>
 <pre class="r"><code>dataf_time &lt;- dataf[,c(3, 6, 7, 9, 13)]
 dataf2 &lt;- dataf[,c(7,9)]
 dup &lt;- which(duplicated(dataf2), TRUE)
 dataf_time &lt;- dataf_time[-dup,]
 real_taketime &lt;- round(difftime(dataf_time$sysTime, dataf_time$datetime, units=&quot;mins&quot;))
 dataf_time &lt;- cbind(dataf_time, real_taketime)</code></pre>
-<p>1.2 Pagal vartotojų deklaruojamą laiką galime apskaičiuoti kiek vidutiniškai užtrunka atlikti kiekvieną pamoką:</p>
+<p><strong>Pagal vartotojų deklaruojamą laiką galime apskaičiuoti kiek vidutiniškai užtrunka atlikti kiekvieną pamoką:</strong></p>
 <pre class="r"><code>lessons &lt;- split(dataf_time, f=dataf_time$lesson_name)
 time_decl &lt;- sapply(lessons, function(x) round(mean(x$takeTime), 2))
 sort(time_decl)</code></pre>
@@ -295,7 +278,7 @@ sort(time_decl)</code></pre>
 ##                    19.52                    22.16                    22.47 
 ##                Functions 
 ##                    30.94</code></pre>
-<p>1.3 Tą patį galime apskaičiuoti ir pagal realų laiką, kurį kiekvienai pamokai atlikti užtruko studentai. Tačiau tam pirmiausia reikia pašalinti eilutes, kuriose atlikimo laikas yra daugiau kaip 60 minučių, kadangi tikėtina, jog tą pamoką studentas atliko per kelis kartus ir šis laikas nėra tikslus:</p>
+<p><strong>Tą patį galime apskaičiuoti ir pagal realų laiką, kurį kiekvienai pamokai atlikti užtruko studentai. Tačiau tam pirmiausia reikia pašalinti eilutes, kuriose atlikimo laikas yra daugiau kaip 60 minučių, kadangi tikėtina, jog tą pamoką studentas atliko per kelis kartus ir šis laikas nėra tikslus:</strong></p>
 <pre class="r"><code>ind &lt;- with(dataf_time, which(dataf_time$real_taketime&gt;60))
 dataf_time &lt;- dataf_time[-ind, ]
 lessons &lt;- split(dataf_time, f=dataf_time$lesson_name)
@@ -314,9 +297,7 @@ sort(time_taken)</code></pre>
 ##                Functions 
 ##                    28.17</code></pre>
 <p>Galime pastebėti, jog studentų deklaruotas vidutinis laikas yra šiek tiek didesnis negu realus laikas, kurį jie užtruko atitinkamoms užduotims atlikti.</p>
-<ol start="2" style="list-style-type: decimal">
-<li>Ar galima pasitikėti žmonių deklaruojamų laiku?</li>
-</ol>
+<p><strong>Ar galima pasitikėti žmonių deklaruojamų laiku?</strong></p>
 <p>Atsakyti į šį klausimą galima ir remiantis ankstesnio klausimo rezultatais (matyti, kad vidutiniai laikai labai panašūs).</p>
 <p>Tačiau tą galime patikrinti ir apskaičiavę skirtumą tarp žmogaus deklaruoto ir sistemos fiksuoto laiko:</p>
 <pre class="r"><code>timedif &lt;- abs(dataf_time$takeTime - dataf_time$real_taketime)
@@ -326,9 +307,7 @@ mean(timedif)</code></pre>
 </div>
 <div id="nagrinesiu-savo-duomenis" class="section level2">
 <h2>Nagrinėsiu savo duomenis:</h2>
-<ol style="list-style-type: decimal">
-<li>Patikrinu kurias užduotis atlikau:</li>
-</ol>
+<p>Patikrinu kurias užduotis atlikau:</p>
 <pre class="r"><code>Domante &lt;- subset(dataf, user == &quot;Domante Bulovaite&quot;)
 unique(Domante$lesson_name)</code></pre>
 <pre><code>##  [1] &quot;Dummy Lesson&quot;             &quot;Basic Building Blocks&quot;   
@@ -340,15 +319,11 @@ unique(Domante$lesson_name)</code></pre>
 ## [13] &quot;Looking at Data&quot;          &quot;Simulation&quot;              
 ## [15] &quot;Dates and Times&quot;          &quot;Base Graphics&quot;</code></pre>
 <p>Atliktos visos užduotys</p>
-<ol start="2" style="list-style-type: decimal">
-<li>Kiek buvo “skipped”:</li>
-</ol>
+<p>Kiek buvo “skipped”:</p>
 <pre class="r"><code>Domante2 &lt;- split(Domante, Domante$skipped)
 nrow(Domante2$`TRUE`)</code></pre>
 <pre><code>## [1] 11</code></pre>
-<ol start="3" style="list-style-type: decimal">
-<li>Kurias užduotis praskipinau:</li>
-</ol>
+<p>Kurias užduotis praskipinau:</p>
 <pre class="r"><code>Domante3 &lt;- split(Domante, Domante$skipped)
 Domante3$`TRUE`</code></pre>
 <pre><code>##         X              name takeTime sysUser sysName             sysTime
@@ -387,7 +362,7 @@ Domante3$`TRUE`</code></pre>
 ## 4076    TRUE       5 2016-09-14 23:19:22    TRUE
 ## 4082    TRUE       5 2016-09-14 23:26:41    TRUE
 ## 4375    TRUE       2 2016-09-15 00:41:04    TRUE</code></pre>
-<p>Taigi, iš naujo turėsiu pereiti “Workspace and Files”, “Vectors”, “Functions” ir “Dates and Times” kursus.</p>
+<p><strong>Taigi, iš naujo turėsiu pereiti “Workspace and Files”, “Vectors”, “Functions” ir “Dates and Times” kursus.</strong></p>
 </div>
 
 

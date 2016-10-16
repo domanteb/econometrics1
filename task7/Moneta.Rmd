@@ -43,3 +43,7 @@ data
 ```{r}
 plot(density(replicate(10000, metimas(100))), xlab="Reikšmė", ylab="Tankis",  main="Balanso tankis",lwd="3",col="2") #imu, jog eksperimentas kartotas 10000 kartų, kad gaučiau tikslesnį tankio grafiką
 ```
+
+
+##Šaltinis
+http://ekonometrija.lt/blog/tikimybi%C5%B3-skai%C4%8Diavimas-monte-karlo-metodu

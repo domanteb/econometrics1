@@ -15,8 +15,14 @@ CRT. Generuojame $n$ atsitiktinių dydžių turinčių Beta skirstinį su parame
 ```{r}
 meanMC <- function(n) mean(rbeta(n, 0.5, 0.5)) #vidurkio funkcija pagal Monte-Carlo metodą
 sim = replicate(10000, meanMC(100))
-plot(density(sim), main="Vidukrio skirstinys, kai n=100", xlab="x", ylab="Tankis", 
-     lwd=2, xlim=c(0.3, 0.65), col=2)
+plot(density(sim), main="Vidukrio skirstinys, kai n=100", xlab="x", ylab="Tankis", lwd=2, xlim=c(0.3, 0.65))
+curve(dnorm(x, mean=mean(sim), sd=sd(sim)), add=TRUE, col=2, lwd=2, lty=2 )
+legend("topleft", c("MC tankis", "Normalusis tankis"), 
+       lwd=2, col = 1:2, inset = .05)
 
-legend("topright","MC tankis", lwd=2, col = 2, inset = .05)
 ```
+
+Galime pastebėti, kad vidurkis labai primena normalųjį skirstinį. Taigi palyginimui į grafiką įtrauktas ir normalusis skirstinys.
+
+#Šaltinis:
+http://ekonometrija.lt/blog/susipa%C5%BEinimas-su-centrine-ribine-teorema
