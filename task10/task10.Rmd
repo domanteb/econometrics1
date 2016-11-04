@@ -1,0 +1,77 @@
+---
+title: "Task 10"
+author: "Domante Bulovaite"
+date: '2016 m lapkričio 3d'
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+**Užduotis skirta išmokti tikrinti paprastą statistinę hipotezę ir suprasti jos rezultatus.**
+
+**UŽDUOTIS:** 
+
+a) Tegul $x1,...,X100∼N(1,2)x1,...,X100∼N(1,2)$.. Susigeneruokite tokią imtį ir patikrinkite nulinę hipotezę, kad $H0:μ=1$, su alternatyva, kad $μ≠1$. Tam rekalinga funkcija *t.test*. Detaliai paaiškinkite ką reiškia funkcijos išvestyje pateikti skaičiai.
+
+
+```{r}
+set.seed(1) #fiksuojamas rezultas, kad kitą kartą generuojant imtį jis nekistų
+x<-rnorm(100, mean = 1, sd =sqrt(2)) #generuojama imtis
+t.test(x, mu=1) # tikrinama nulinė hipotezė, jog μ=1
+```
+**t** - statistika
+
+**df** - Stjudento skirstinio laisvės laipsnis[(n-1)=100-1=99];
+
+**95%** pasikliautinasis intervalas yra [ 0.9019457, 1.4060343];
+
+**mean of x** - sugeneruotos imties vidurkis;
+
+**p-value** yra tikimybė, kad atmesime teisingą nulinę hipotezę. Jei **p-value > 0.05**, tai H0 hipotezė neatmetama, jei **p-value<0.05**, tai nulinę hipotezę atmetame. 
+*Taigi, šiuo atvėju nulinė hipotezė **neatmetama**.*
+
+<br>
+
+Taip pat hipotezę galime patikrinti naudojant funkciją **qt(p, df)**, kuri apskaičiuoja t reikšmę, kurią lyginsime su t reikšme pateikta lentelėje.
+*Reikšmingumo lygmuo - 95%, tai reiškia, jog kiekviena "uodega" lygi 2.5%, taigi p = 1 - 0.025 = 0.975. *
+
+```{r}
+qt(0.975, 99)
+```
+
+Lyginame gautą t reikšmę su t reikšme lentelėje. Jei |t(lent)| > t(apsk), tai nulinė hipotezė atmetama. **Mano atvėju 1.2123 < 1,984217, taigi nulinė hipotezė neatmetama.**
+
+<br>
+
+b) Kartokite a) dalies generavima daug kartų (pvz.10^4) ir suskaičiuokite kiek atvejų buvo atmesta nulinė hipotezė? Išreiškite šį skaičių procentais. Kokią išvadą galite padaryti?
+
+
+```{r}
+func <- function(){ 
+  t <- t.test(rnorm(100, mean=1, sd=sqrt(2)), mu=1) 
+  rez <- (t$p.value < 0.05)
+  rez
+}
+# funkcija generuoja imtį remiantis gauta p reikšme, tikrina hipotezę H0:μ=1, su alternatyva, kad μ≠1
+
+set.seed(11)
+atm <- replicate(10^4, func()) #kartojame funkciją 10^4 kartų
+mean(atm) #skaičiuojame kiek kartų nulinė hipotezė buvo atmesta
+
+```
+
+**IŠVADA:** Taigi, apie 5% atvėjų nulinė hipotezė buvo atmesta, nors ir generavome imtį su vidurkiu lygiu 1. Tai galėjome numatyti, nes hipotezę tikrinome su 0,05 reikšmingumo lygmeniu, vadinasi galimybė atmesti teisingą H0 buvo 5%. Galime daryti išvadą, jog vidurkiai statistiškai reikšmingai nesiskiria nuo 1. 
+
+<br>
+
+
+*Šaltiniai:*
+
+http://ekonometrija.lt/zinynai/stiudento-t-kriterijus
+
+https://www.r-bloggers.com/one-sample-students-t-test/
+
+http://stat.vadoveliai.lt/files/STAT1SV_DEMO.pdf
+
