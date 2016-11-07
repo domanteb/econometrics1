@@ -1,0 +1,75 @@
+---
+title: "Task 11"
+author: "Domante Bulovaite"
+date: '2016 m lapkričio 7d'
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+###UŽDUOTIS:
+Pakete *datasets* yra duomenų masyvas *longley*. Iš šio kintamųjų padarykite tiesinę regresiją, kur prognozuojamas kintamasis būtų *GNP*, o regresosius *Employed*. Jums reikia:
+
+a) Įvertinti paprastosios tiesinės regresijos modelį. Pateikti modelio summary ir pakomentuoti ką reiškia gauti skaičiai. Kaip interpretuoti gautus rezultatus?
+
+b) Padarykite modelio prognozes taškuose $62, 65, 68$.
+
+c) Išbrėžkite kintamųjų sklaidos diagramą kartu su tiesinės regresijos tiese ir naujomis prognozėmis. Grafiką pateikite su pilna legena, kurioje būtų nurodyti visi žymėjimai.
+
+
+<br>
+
+###SPRENDIMAS:
+1.Peržiūrime duomenų masyvo **longley** duomenis:
+```{r}
+longley
+```
+
+<br>
+
+2.Funkcijos **lm** pagalba sukuriame tiesinę regresiją ir pakometuojame gautus duomenis:
+
+```{r}
+x <- longley$Employed  #regresorius
+y <- longley$GNP #prognozuojamas kintamasis
+modelis <- lm(y~x)
+summary(modelis) 
+```
++ **Residuals** - rodo paklaidas; duomenų išsibarstymą apie regresijos tiesę. Pateikiama mažiausia reikšmė(*Min*), didžiausia reikšmė(*Max*), mediana bei kvartiliai.
+<br>
++ **Coefficients** - pateikiami lygties y = β0 + β1x + ϵ koeficientų β0(=-1430,482) ir β1 (=27,836) įverčiai (*Estimate*); šių įverčių standartinis nuokrypis (*Std. Error*); Stjudento skirstinio statistikos t reikšmė (*t value*); tikimybė (*Pr(>|t|)*) parodo su kokiu reikšmingumo lygmeniu šie įverčiai yra reikšmingi
+<br>
++ **Residual standard error**(the positive square root of the mean square error) - rodo duomenų nukrypimą nuo modelio (laisvės laipsnis 14)
+<br>
++ **Multiple R-squared** - modelio tinkamumo matas; įgyja reikšmes iš intervalo [0,1]; kuo R-squared arčiau 1, tuo modelis geriau tinka duomenims. 
+
+<br>
+
+3.Modelio prognozės taškuose **62, 65, 68**:
+
+```{r}
+newx <- c(62, 65, 68) #vektorius su nurodytais taškais
+newy = predict(modelis, newdata=data.frame(x=newx)) #pagal gautą modelį surandame y prognozes nurodytuose taškuose
+newy #išvedame prognozes
+```
+
+4.Išbrėžiame kintamųjų sklaidos diagramą kartu su tiesinės regresijos tiese ir naujomis prognozėmis:
+
+```{r}
+
+plot(x,y, xlab='Employed', ylab='GNP') #kintamųjų sklaidos diagrama
+abline(modelis, col=2) #tiesinės regresijos tiese
+points(newx, newy, col=3, pch=19) #naujos prognozės
+legend("topleft", c("Duomenys","Tiesinės regresijos  tiesė", "Naujos prognozės"), lty=c(0,1,0), pch=c(1,NA,19), col=c(1,2,3), inset = .05)
+
+```
+
+**ŠALTINIAI:**
+<br>
+http://www.statistika.mif.vu.lt/wp-content/uploads/2014/04/regresine-analize.pdf
+<br>
+https://www.r-bloggers.com/standard-deviation-vs-standard-error/
+<br>
+http://stats.stackexchange.com/questions/110999/r-confused-on-residual-terminology
+
