@@ -1,0 +1,21 @@
+---
+title: "3 užduotis"
+author: "Domantė Bulovaitė"
+date: '2017 m sausis 20 d '
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+Faile ‘data_a.csv’ yra pateikti duomenys reikalingi tiesinės regresijos tyrimui. Duomenų masyvo aprašymas pateiktas minėto failo pradžioje.
+
+1.Duomenų apžvalga ir paruošimas. Šioje dalyje jums reikia susipažinti su duomenimis ir paruošti duomenis tolimesnei analizei:
+
+
+```{r}
+dataf=read.csv("data1.csv", stringsAsFactors = FALSE)#Ištryniau iš excel failo pirmąsias eilutes su reikšmių paaiškinimais, nes kitaip neskaitė failo
+head(dataf, 20)
+```
+Nepavyko sutvarkyti excel duomenų, reikia kad būtų atskirta kableliais, o ne stulpeliais. 

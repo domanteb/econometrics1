@@ -1,0 +1,46 @@
+---
+title: "Egzaminas"
+author: "Domantė Bulovaitė"
+date: '2017 m sausis 20 d '
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+##UŽDUOTIS 1 
+Sugeneruoju x su pateiktu kodu:
+```{r}
+set.seed(1234567890)
+x <- rnorm(5000)
+head(x,10) #peržiūriu pirmąsias 10 reikšmių
+```
+
+1)Suraskite x vidukio ir standartinio nuokrypio įverčius:
+
+```{r}
+mean(x) #vidurkis
+sd(x) #standartinis nuokrypis
+```
+
+2)Raskite x išskirtis, pašalinkite rastas išskirtis iš x vektorius ir nubrėžkite atnaujinto x histogramą:
+
+```{r}
+interv1 <- mean(x) - 3*sd(x) #pagal duotą formulę apskaičiuoju intervalo pradžią
+interv2 <- mean(x) + 3*sd(x) #pagal duotą formulę apskaičiuoju intervalo pabaigą
+interv1
+interv2
+interv <- ((x > interv1) & ( x < interv2)) #randu reikalingą intervalą
+isskirtis <- x[!interv] #randu intervalo reikšmes
+isskirtis
+idx = which(x %in% isskirtis) #randu reikšmių indeksus
+idx
+new_x<-x[interv]
+hist(new_x, xlab="x")
+
+```
+
+**ŠALTINIAI:**
+Užduotys darytos semestro metu, <br>
+http://stackoverflow.com/questions/9665984/how-to-delete-multiple-values-from-a-vector
+
